@@ -14,6 +14,6 @@ services:
      volumes:
        - ../docker-data/grafana:/var/lib/grafana    
    speedtest:    
-     image: d4ex/speedtest:latest
+     image: d4ex/speedtest-arm:latest
      ports:
        - 8000:8000      
