@@ -13,7 +13,7 @@ UPLOAD: Gauge = Gauge('upload', 'up_gauge')
 PING: Gauge = Gauge('ping', 'ping_Gauge')
 s = sched.scheduler(time.time, time.sleep)
 
-def do_something(sc): 
+def speedtest(sc): 
     print("Start Speedtest...")
     
     result = subprocess.run(['speedtest-cli', '--json'], stdout=subprocess.PIPE)
@@ -24,15 +24,8 @@ def do_something(sc):
     UPLOAD.set(jsonObj.upload)
     PING.set(jsonObj.ping)
  
-    s.enter(300, 1, do_something, (sc,))
+    s.enter(300, 1, speedtest, (sc,))
 
-s.enter(5, 1, do_something, (s,))
+s.enter(5, 1, speedtest, (s,))
 start_http_server(8000)
 s.run()
-
-
-
-data = '{"name": "John Smith", "hometown": {"name": "New York", "id": 123}}'
-
-# Parse JSON into an object with attributes corresponding to dict keys.
-
