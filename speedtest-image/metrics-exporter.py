@@ -16,15 +16,19 @@ s = sched.scheduler(time.time, time.sleep)
 def speedtest(sc): 
     print("Start Speedtest...")
     
-    result = subprocess.run(['speedtest-cli', '--json'], stdout=subprocess.PIPE)
-    jsonObj = json.loads(result.stdout.decode('utf-8'), object_hook=lambda d: SimpleNamespace(**d))
-    print(jsonObj.download, jsonObj.upload, jsonObj.ping)
+    try: 
+        result = subprocess.run(['speedtest-cli', '--json'], stdout=subprocess.PIPE)
+        jsonObj = json.loads(result.stdout.decode('utf-8'), object_hook=lambda d: SimpleNamespace(**d))
+        print(jsonObj.download, jsonObj.upload, jsonObj.ping)
     
-    DOWNLOAD.set(jsonObj.download)
-    UPLOAD.set(jsonObj.upload)
-    PING.set(jsonObj.ping)
+        DOWNLOAD.set(jsonObj.download)
+        UPLOAD.set(jsonObj.upload)
+        PING.set(jsonObj.ping)
  
-    s.enter(300, 1, speedtest, (sc,))
+        s.enter(300, 1, speedtest, (sc,))
+    except:
+        print("Unexpected error:", sys.exc_info()[0])
+        s.enter(300, 1, speedtest, (sc,))
 
 s.enter(5, 1, speedtest, (s,))
 start_http_server(8000)
