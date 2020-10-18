@@ -27,7 +27,7 @@ def speedtest(sc):
  
         s.enter(300, 1, speedtest, (sc,))
     except:
-        print("Unexpected error:", sys.exc_info()[0])
+        print("Unexpected error: Result - ", result)
         s.enter(300, 1, speedtest, (sc,))
 
 s.enter(5, 1, speedtest, (s,))
